@@ -1,6 +1,9 @@
 from Character_Stats import Character_Stats
 
 class Character:
+  """
+  Class to define character attributes and methods
+  """
   def __init__(self, name: str, stats: Character_Stats) -> None:
     self.__name = name
     self.stats = stats
