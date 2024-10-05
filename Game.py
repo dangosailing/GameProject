@@ -9,7 +9,13 @@ class Game:
     self.player = player
     self.enemy = enemy
 
-  def run_game(self):
+  def display_information(text:str) -> None:
+    """
+    Output text information to player. To be displayed in information window in UI
+    """
+    print(text) #print for now. Will implement a more advanced version when UI is in placec
+
+  def run_game(self) -> None:
     """
     Initiate new game method
     """
@@ -23,12 +29,12 @@ class Game:
       player_attack_damage = player.attack(opponent_defense=enemy.stats.get_defense())
       if player_attack_damage > 0:
         enemy.stats.set_hp(enemy.stats.get_hp() - player_attack_damage)
-        print(f"{enemy.get_name()} is taking damage. {enemy.stats.get_hp()} HP remaining")
+        self.display_information(f"{enemy.get_name()} is taking damage. {enemy.stats.get_hp()} HP remaining")
       else:
-        print(f"{enemy.get_name()} took no damage. The attack was too weak!")
+        self.display_information(f"{enemy.get_name()} took no damage. The attack was too weak!")
       if enemy.stats.get_hp() <= 0:
-        print(f"{enemy.get_name()} is knocked out!")
-        print("Game is over! You won")
+        self.display_information(f"{enemy.get_name()} is knocked out!")
+        self.display_information("Game is over! You won")
         break
       """
       Enemy attacks
@@ -36,12 +42,12 @@ class Game:
       enemy_attack_damage = enemy.attack(opponent_defense=player.stats.get_defense())
       if enemy_attack_damage > 0:
         player.stats.set_hp(player.stats.get_hp() - enemy_attack_damage)
-        print(f"{player.get_name()} is taking damage. {player.stats.get_hp()} HP remaining")
+        self.display_information(f"{player.get_name()} is taking damage. {player.stats.get_hp()} HP remaining")
       else:
-        print(f"{player.get_name()} took no damage. The attack was too weak!")
+        self.display_information(f"{player.get_name()} took no damage. The attack was too weak!")
       if player.stats.get_hp() <= 0:
-        print(f"{player.get_name()} is knocked out!")
-        print("Game is over! You won")
+        self.display_information(f"{player.get_name()} is knocked out!")
+        self.display_information("Game is over! You won")
         break
       
 #--------------- Trial Run ---------------
