@@ -13,32 +13,35 @@ class Game:
     """
     Initiate new game method
     """
-    while self.player.stats.get_hp() > 0 and self.enemy.stats.get_hp() > 0:
+    player = self.player
+    enemy = self.enemy
+
+    while player.stats.get_hp() > 0 and enemy.stats.get_hp() > 0:
       """
       Player attacks
       """
-      enemy_hp = self.enemy.stats.get_hp() + self.enemy.stats.get_defense() - self.player.stats.get_attack()
-      if enemy_hp < self.enemy.stats.get_hp(): # To prevent enemy HP from growing if defense is greater than attack and the resulting HP is bigger than before the attack 
-        self.enemy.stats.set_hp(enemy_hp)
-        print(f"{self.enemy.get_name()} is taking damage, {self.enemy.stats.get_hp()} HP remaining")
+      player_attack_damage = player.attack(opponent_defense=enemy.stats.get_defense())
+      if player_attack_damage > 0:
+        enemy.stats.set_hp(enemy.stats.get_hp() - player_attack_damage)
+        print(f"{enemy.get_name()} is taking damage. {enemy.stats.get_hp()} HP remaining")
       else:
-        print(f"{self.enemy.get_name()} took no damage. The attack was too weak!")
-      if self.enemy.stats.get_hp() <= 0:
-        print(f"{self.enemy.get_name()} is knocked out!")
+        print(f"{enemy.get_name()} took no damage. The attack was too weak!")
+      if enemy.stats.get_hp() <= 0:
+        print(f"{enemy.get_name()} is knocked out!")
         print("Game is over! You won")
         break
       """
       Enemy attacks
       """
-      player_hp = self.player.stats.get_hp() + self.player.stats.get_defense() - self.enemy.stats.get_attack()
-      if player_hp < self.player.stats.get_hp(): # To prevent player HP from growing if defense is greater than attack and the resulting HP is bigger than before the attack 
-        self.player.stats.set_hp(player_hp)
-        print(f"{self.player.get_name()} is taking damage, {self.player.stats.get_hp()} HP remaining")
+      enemy_attack_damage = enemy.attack(opponent_defense=player.stats.get_defense())
+      if enemy_attack_damage > 0:
+        player.stats.set_hp(player.stats.get_hp() - enemy_attack_damage)
+        print(f"{player.get_name()} is taking damage. {player.stats.get_hp()} HP remaining")
       else:
-        print(f"{self.player.get_name()} took no damage. The attack was too weak!")
-      if self.player.stats.get_hp() <= 0:
-        print(f"{self.player.get_name()} is knocked out!")
-        print("Game is over! You lost")
+        print(f"{player.get_name()} took no damage. The attack was too weak!")
+      if player.stats.get_hp() <= 0:
+        print(f"{player.get_name()} is knocked out!")
+        print("Game is over! You won")
         break
       
 #--------------- Trial Run ---------------
