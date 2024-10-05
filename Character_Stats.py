@@ -4,7 +4,8 @@ class Character_Stats:
   """
   def __init__(self, hp:int, attack:int, defense:int, speed:int) -> None:
     self.__hp = hp # Character HP pool: trigger win or fail state for battle
-    self.__attack = attack # Character damage value: damage to hp = attack of character - def of opponent 
+    self.__attack = attack # Character attack value: damage to hp = attack of character - def of opponent 
+    self.__defense = defense # Character defense value: damage to hp = attack of character - def of opponent 
     self.__speed = speed # Character speed value: determines who goes first in a round
 
   def get_hp(self) -> int:
