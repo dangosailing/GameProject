@@ -25,6 +25,7 @@ Once MVP (minimum viable product) is achieved the following features will be con
 - New classes
 - New monsters
 - Difficulty levels (number of monsters to fight)
+- Maybe list version updates here once MVP is reached?
 
 ## Setting up virtual env (macOS)
 1) python3 -m venv .venv
