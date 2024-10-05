@@ -9,11 +9,19 @@ class Game:
     self.player = player
     self.enemy = enemy
 
-  def display_information(text:str) -> None:
+  def display_information(self, text:str) -> None:
     """
     Output text information to player. To be displayed in information window in UI
     """
     print(text) #print for now. Will implement a more advanced version when UI is in placec
+
+  def play_round(self, attacker:Character, defender:Character) -> None:
+    attack_damage = attacker.attack(opponent_defense=defender.stats.get_defense())
+    if attack_damage > 0:
+      defender.stats.set_hp(defender.stats.get_hp() - attack_damage)
+      self.display_information(f"{defender.get_name()} is taking damage. {defender.stats.get_hp()} HP remaining")
+    else:
+      self.display_information(f"{defender.get_name()} took no damage. The attack was too weak!")
 
   def run_game(self) -> None:
     """
@@ -26,12 +34,7 @@ class Game:
       """
       Player attacks
       """
-      player_attack_damage = player.attack(opponent_defense=enemy.stats.get_defense())
-      if player_attack_damage > 0:
-        enemy.stats.set_hp(enemy.stats.get_hp() - player_attack_damage)
-        self.display_information(f"{enemy.get_name()} is taking damage. {enemy.stats.get_hp()} HP remaining")
-      else:
-        self.display_information(f"{enemy.get_name()} took no damage. The attack was too weak!")
+      self.play_round(attacker=player, defender=enemy)
       if enemy.stats.get_hp() <= 0:
         self.display_information(f"{enemy.get_name()} is knocked out!")
         self.display_information("Game is over! You won")
@@ -39,12 +42,7 @@ class Game:
       """
       Enemy attacks
       """
-      enemy_attack_damage = enemy.attack(opponent_defense=player.stats.get_defense())
-      if enemy_attack_damage > 0:
-        player.stats.set_hp(player.stats.get_hp() - enemy_attack_damage)
-        self.display_information(f"{player.get_name()} is taking damage. {player.stats.get_hp()} HP remaining")
-      else:
-        self.display_information(f"{player.get_name()} took no damage. The attack was too weak!")
+      self.play_round(attacker=enemy, defender=player)
       if player.stats.get_hp() <= 0:
         self.display_information(f"{player.get_name()} is knocked out!")
         self.display_information("Game is over! You won")
