@@ -9,12 +9,6 @@ class Game:
     self.player = None
     self.enemy = None
 
-  def display_information(self, text:str) -> None:
-    """
-    Output text information to player. To be displayed in information window in UI
-    """
-    print(text) #print for now. Will implement a more advanced version when UI is in placec
-
   def create_characters(self):
       """
       Ask player to create their character and select an enemy
