@@ -64,9 +64,3 @@ class Game:
         self.display_information(f"{player.get_name()} is knocked out!")
         self.display_information("Game is over! You won")
         break
-      
-#--------------- Trial Run ---------------
-
-new_game = Game()
-new_game.create_characters()
-new_game.run_game()
