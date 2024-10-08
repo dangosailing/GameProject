@@ -5,15 +5,32 @@ class Game:
   """
   Class to define Game attribute and methods
   """
-  def __init__(self, player:Character, enemy:Character) -> None:
-    self.player = player
-    self.enemy = enemy
+  def __init__(self) -> None:
+    self.player = None
+    self.enemy = None
 
   def display_information(self, text:str) -> None:
     """
     Output text information to player. To be displayed in information window in UI
     """
     print(text) #print for now. Will implement a more advanced version when UI is in placec
+
+  def create_characters(self):
+      """
+      Ask player to create their character and select an enemy
+      """
+      player_name = input("Please enter the name of your character: ")
+      enemy_name ="Goblin King" # Placeholder name 
+
+      warrior_stats = Character_Stats(hp=100, attack=30, defense=5, speed=15) # Placeholder stats
+      warrior = Character(name=player_name, stats=warrior_stats)
+
+      enemy_stats = Character_Stats(hp=30, attack=2, defense=2, speed=25) # Placeholder stats
+      enemy = Character(name=enemy_name, stats=enemy_stats)
+      
+      self.player = warrior
+      self.enemy = enemy
+      
 
   def play_round(self, attacker:Character, defender:Character) -> None:
     attack_damage = attacker.attack(opponent_defense=defender.stats.get_defense())
@@ -50,12 +67,6 @@ class Game:
       
 #--------------- Trial Run ---------------
 
-warrior_stats = Character_Stats(hp=100, attack=30, defense=5, speed=15)
-warrior = Character(name="Baylor", stats=warrior_stats)
-
-goblin_stats = Character_Stats(hp=30, attack=2, defense=2, speed=25) 
-goblin = Character(name="Goblus", stats=goblin_stats)
-
-new_game = Game(player=warrior, enemy=goblin)
-
+new_game = Game()
+new_game.create_characters()
 new_game.run_game()
