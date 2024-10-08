@@ -30,9 +30,9 @@ class Game:
     attack_damage = attacker.attack(opponent_defense=defender.stats.get_defense())
     if attack_damage > 0:
       defender.stats.set_hp(defender.stats.get_hp() - attack_damage)
-      self.display_information(f"{defender.get_name()} is taking damage. {defender.stats.get_hp()} HP remaining")
+      print(f"{defender.get_name()} is taking damage. {defender.stats.get_hp()} HP remaining")
     else:
-      self.display_information(f"{defender.get_name()} took no damage. The attack was too weak!")
+      print(f"{defender.get_name()} took no damage. The attack was too weak!")
 
   def run_game(self) -> None:
     """
@@ -47,14 +47,14 @@ class Game:
       """
       self.play_round(attacker=player, defender=enemy)
       if enemy.stats.get_hp() <= 0:
-        self.display_information(f"{enemy.get_name()} is knocked out!")
-        self.display_information("Game is over! You won")
+        print(f"{enemy.get_name()} is knocked out!")
+        print("Game is over! You won")
         break
       """
       Enemy attacks
       """
       self.play_round(attacker=enemy, defender=player)
       if player.stats.get_hp() <= 0:
-        self.display_information(f"{player.get_name()} is knocked out!")
-        self.display_information("Game is over! You won")
+        print(f"{player.get_name()} is knocked out!")
+        print("Game is over! You won")
         break
