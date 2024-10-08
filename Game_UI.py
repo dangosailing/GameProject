@@ -71,7 +71,3 @@ class Game_UI(Game):
         new_game_button.place(relheight=0.1, relwidth=0.33, rely=.5, relx=0)
         quit_button.place(relheight=0.1, relwidth=0.33, rely=.6, relx=0)
         self.root.mainloop()
-
-
-new_game_window = Game_UI()
-new_game_window.render_menu()
