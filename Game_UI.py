@@ -1,5 +1,6 @@
-from tkinter import Tk, Button, Frame, BOTH, Label, Listbox
+from tkinter import Tk, Button, Frame, BOTH, Label, Listbox, simpledialog
 from datetime import datetime
+from Character import Character
 
 class Game_UI:
     """
@@ -8,13 +9,15 @@ class Game_UI:
     def __init__(self) -> None:
         self.root = Tk()
         self.game_frame = Frame(self.root, bg="black") # Creating a frame to make it easer to wipe it once i want to transition from main menu into game 
-        self.display_info = None # Used to easier get access from within methods
-        self.display_player = None # Used to easier get access from within methods
-        self.display_enemy = None # Used to easier get access from within methods
+        self.window_event = None # Used to easier get access from within methods
+        self.window_player = None # Used to easier get access from within methods
+        self.window_enemy = None # Used to easier get access from within methods
         self.button_quit = None # Used to easier get access from within methods
         self.button_new_game = None # Used to easier get access from within methods
         self.button_attack = None # Used to easier get access from within methods
         self.button_new_round = None # Used to easier get access from within methods
+        self.dialog_enter_name = None # Used to easier get access from within methods
+        self.game_over_label = None # Used to easier get access from within methods
         
     def clear_game_frame(self) -> None:
         """
@@ -23,40 +26,55 @@ class Game_UI:
         for widget in self.game_frame.winfo_children():
             widget.destroy()
 
-    def update_info_window(self, event_message:str) -> None:
+    def update_event_window(self, event_message:str) -> None:
         """
         Updates the game log display with new information and a timestamp
         """
         timestamp_event = datetime.now().strftime("%H:%M:%S")
-        self.display_info.insert(0, f"{timestamp_event} - {event_message}")
+        self.window_event.insert(0, f"{timestamp_event} - {event_message}")
 
+    def update_char_window(self, character:Character) -> None:
+        """
+        Updates the game log display with new information and a timestamp
+        """
+        stats = character.stats
+        name = character.get_name()
+        health = stats.get_hp()
+        attack = stats.get_attack()
+        speed = stats.get_speed()
+        defense = stats.get_defense()
+        status_text = f"{name}\nHealth:{health}\nAttack: {attack}\nDefense: {defense}\nSpeed: {speed}"
+        if character.is_player:
+            self.window_player.config(text=status_text)
+        else:
+            self.window_enemy.config(text=status_text)
+                    
     def create_widgets(self) -> None:
         """
         Creates and sets the widgets without methods. Widgets methods are assigned in the Main class
         """
-        self.display_info = Listbox(self.game_frame, background="darkgrey", bd=5)
-        self.display_player = Label(self.game_frame, background="white", bd=5, text="PLACEHOLDER: Player name")
-        self.display_enemy = Label(self.game_frame, background="red", bd=5, text="PLACEHOLDER: Enemy name")
+        self.window_event = Listbox(self.game_frame, background="darkgrey", bd=5)
+        self.window_player = Label(self.game_frame, background="white", bd=5, text="PLACEHOLDER: Player name")
+        self.window_enemy = Label(self.game_frame, background="red", bd=5, text="PLACEHOLDER: Enemy name")
         self.button_quit = Button(self.game_frame, text="Quit Game")
         self.button_new_round = Button(self.game_frame, text="NEW ROUND")
         self.button_attack = Button(self.game_frame, text="ATTACK")
         self.button_new_game = Button(self.game_frame, text="New Game")
         self.button_quit = Button(self.game_frame, text="Quit", command=exit)
-
+        self.game_over_label = Label(self.game_frame, text="Game Over", bg="black", fg="white")
 
     def place_widgets_game(self) -> None:
         """
         Places widgets in the game frame
         """
-        self.display_info.place(relheight=0.5, relwidth=0.33, relx=.0)
-        self.display_player.place(relheight=0.5, relwidth=0.33, relx=.33)
-        self.display_enemy.place(relheight=0.5, relwidth=0.33, relx=.66)    
+        self.window_event.place(relheight=0.5, relwidth=0.33, relx=.0)
+        self.window_player.place(relheight=0.5, relwidth=0.33, relx=.33)
+        self.window_enemy.place(relheight=0.5, relwidth=0.33, relx=.66)    
         
         self.button_quit.place(relheight=.1, relwidth=.33, rely=.5)
         self.button_new_round.place(relheight=.1, relwidth=.33, rely=.5, relx=.33)
         self.button_attack.place(relheight=.1, relwidth=.33, rely=.5, relx=.66)
         
-
     def render_game_frame(self):
         """
         Set root window to full screen and make the game frame expand to fill it
@@ -71,3 +89,11 @@ class Game_UI:
         self.button_new_game.place(relheight=0.1, relwidth=0.33, rely=.5, relx=0)
         self.button_quit.place(relheight=0.1, relwidth=0.33, rely=.6, relx=0)
 
+    def render_game_over(self, game_over_message:str) -> None:
+        """
+        Render game over screen
+        """
+        self.game_over_label.config(text=game_over_message)
+        self.game_over_label.place(relheight=.1, relwidth=0.33, rely=.4, relx=.33)
+        self.button_new_game.place(relheight=.1, relwidth=0.33, rely=.5, relx=.33)
+        self.button_quit.place(relheight=.1, relwidth=0.33, rely=.6, relx=.33)
