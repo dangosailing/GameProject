@@ -1,73 +1,73 @@
-from tkinter import Tk, simpledialog, Button, Entry, Frame, BOTH, Label
-from Game import Game
+from tkinter import Tk, Button, Frame, BOTH, Label, Listbox
+from datetime import datetime
 
-class Game_UI(Game):
+class Game_UI:
     """
     Game UI class that contains the methods used to render information from the game to the player
     """
     def __init__(self) -> None:
-        super().__init__()
         self.root = Tk()
         self.game_frame = Frame(self.root, bg="black") # Creating a frame to make it easer to wipe it once i want to transition from main menu into game 
-        self.info_display = None # Used to easier get access from within methods
-        self.player_display = None # Used to easier get access from within methods
-        self.enemy_display = None # Used to easier get access from within methods
-        self.quit_button = None # Used to easier get access from within methods
-        self.new_game_button = None # Used to easier get access from within methods
-        self.attack_button = None # Used to easier get access from within methods
-        self.defend_button = None # Used to easier get access from within methods
+        self.display_info = None # Used to easier get access from within methods
+        self.display_player = None # Used to easier get access from within methods
+        self.display_enemy = None # Used to easier get access from within methods
+        self.button_quit = None # Used to easier get access from within methods
+        self.button_new_game = None # Used to easier get access from within methods
+        self.button_attack = None # Used to easier get access from within methods
+        self.button_new_round = None # Used to easier get access from within methods
         
-        
-    def clear_game_frame(self, frame:Frame) -> None:
+    def clear_game_frame(self) -> None:
         """
         Clears the game frame from elements
         """
-        for widget in frame.winfo_children():
+        for widget in self.game_frame.winfo_children():
             widget.destroy()
 
-    def update_info_window(self, text) -> None:
+    def update_info_window(self, event_message:str) -> None:
         """
-        Updates the game log display with new information
+        Updates the game log display with new information and a timestamp
         """
-        self.info_display.config(text=text)
+        timestamp_event = datetime.now().strftime("%H:%M:%S")
+        self.display_info.insert(0, f"{timestamp_event} - {event_message}")
 
-    def render_game_screen(self, frame:Frame) -> None:
+    def create_widgets(self) -> None:
         """
-        Renders the initial game window when starting the game from the menu
+        Creates and sets the widgets without methods. Widgets methods are assigned in the Main class
         """
-        self.info_display = Label(frame, background="darkgrey", bd=5, text="PLACEHOLDER: GAME EVENT INFORMATION")
-        self.player_display = Label(frame, background="blue", bd=5, text="PLACEHOLDER: Player name")
-        self.enemy_display = Label(frame, background="red", bd=5, text="PLACEHOLDER: Enemy name")
-        self.info_display.place(relheight=0.5, relwidth=0.33, relx=.0)
-        self.player_display.place(relheight=0.5, relwidth=0.33, relx=.33)
-        self.enemy_display.place(relheight=0.5, relwidth=0.33, relx=.66)
+        self.display_info = Listbox(self.game_frame, background="darkgrey", bd=5)
+        self.display_player = Label(self.game_frame, background="white", bd=5, text="PLACEHOLDER: Player name")
+        self.display_enemy = Label(self.game_frame, background="red", bd=5, text="PLACEHOLDER: Enemy name")
+        self.button_quit = Button(self.game_frame, text="Quit Game")
+        self.button_new_round = Button(self.game_frame, text="NEW ROUND")
+        self.button_attack = Button(self.game_frame, text="ATTACK")
+        self.button_new_game = Button(self.game_frame, text="New Game")
+        self.button_quit = Button(self.game_frame, text="Quit", command=exit)
+
+
+    def place_widgets_game(self) -> None:
+        """
+        Places widgets in the game frame
+        """
+        self.display_info.place(relheight=0.5, relwidth=0.33, relx=.0)
+        self.display_player.place(relheight=0.5, relwidth=0.33, relx=.33)
+        self.display_enemy.place(relheight=0.5, relwidth=0.33, relx=.66)    
         
-        self.quit_button = Button(frame, text="Quit Game", command=exit) # Game needs a Quit button always available since the game is fullscreen
-        self.save_button = Button(frame, text="Save", command=lambda: self.update_info_window("SAVING")) # Placeholder to test window update method. Lamda here is used to create an anonymous function that we can pass our function to. This is done to allow for text to passed as an argument to the callback function
-        self.attack_button = Button(frame, text="ATTACK",  command=lambda: self.update_info_window("PLAYER ATTACKING"))
-        self.defend_button = Button(frame, text="DEFEND",  command=lambda: self.update_info_window("PLAYER DEFENDING"))
+        self.button_quit.place(relheight=.1, relwidth=.33, rely=.5)
+        self.button_new_round.place(relheight=.1, relwidth=.33, rely=.5, relx=.33)
+        self.button_attack.place(relheight=.1, relwidth=.33, rely=.5, relx=.66)
         
-        self.save_button.place(relheight=0.1, relwidth=0.33, rely=.5)
-        self.quit_button.place(relheight=0.1, relwidth=0.33, rely=.6)
-        self.attack_button.place(relheight=0.1, relwidth=0.33, rely=.5, relx=0.33)
-        self.defend_button.place(relheight=0.1, relwidth=0.33, rely=.6, relx=0.33)
 
-
-    def new_game(self) -> None:
+    def render_game_frame(self):
         """
-        Clears game menu window and loads the render method for the game window
-        """
-        self.clear_game_frame(self.game_frame)
-        self.render_game_screen(self.game_frame)
-
-    def render_menu(self) -> None:
-        """
-        Renders the initial game menu window
+        Set root window to full screen and make the game frame expand to fill it
         """
         self.root.attributes('-fullscreen',True) # Sets the main root window fo fullscreen
         self.game_frame.pack(expand=1, fill=BOTH) # Sets the game frame to expand into fullscreen
-        new_game_button = Button(self.game_frame, text="New Game", command=self.new_game)
-        quit_button = Button(self.game_frame, text="Quit", command=exit) # Game needs a Quit button always available since the game is fullscreen
-        new_game_button.place(relheight=0.1, relwidth=0.33, rely=.5, relx=0)
-        quit_button.place(relheight=0.1, relwidth=0.33, rely=.6, relx=0)
-        self.root.mainloop()
+
+    def place_widgets_menu(self) -> None:
+        """
+        Places widgets in the menu frame
+        """
+        self.button_new_game.place(relheight=0.1, relwidth=0.33, rely=.5, relx=0)
+        self.button_quit.place(relheight=0.1, relwidth=0.33, rely=.6, relx=0)
+
