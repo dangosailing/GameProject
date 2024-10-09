@@ -2,7 +2,7 @@ from Game import Game
 from Game_UI import Game_UI
 from tkinter import simpledialog
 
-class Main(Game, Game_UI):
+class Main_App(Game, Game_UI):
     """
     Class used to bind the game and the ui together
     """
@@ -92,41 +92,8 @@ class Main(Game, Game_UI):
         self.clear_game_frame()
         self.create_widgets()
         self.render_game_over(event_msg)
+        self.configure_button_methods()
         self.game_active = False
 
-
-
-  
-        
-    
-                    
-    
-new_game = Main()
+new_game = Main_App()
 new_game.initialize_menu()
-
-
-
-"""
-Add a round count that tracks number of rounds the battle takes
-
-When game starts display a message telling player to start new round.
-Only thing player can do when game starts is to start a new round or quit game.
-
-When new round starts add to round count and display round number in event window
-
-
-
-Complete one round in game
-
-When round is initiated, disable new round button
-When round is over, ie not initiated, disable attack button
-
-A round consists of an attack from a player and one from an enemy
-Use speed to determine who goes first
-
-Use a conditional if statement to determine who goes first and who goes last using the speed attribute
-Use a variable to save who goes first and who goes last
-
-Calculate damage value using class method attack
-
-"""
