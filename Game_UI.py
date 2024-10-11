@@ -1,4 +1,4 @@
-from tkinter import Tk, Button, Frame, BOTH, Label, Listbox, simpledialog
+from tkinter import Tk, Button, Frame, BOTH, Label, Listbox
 from datetime import datetime
 from Character import Character
 from os import path
