@@ -103,6 +103,7 @@ class Main_App(Game, Game_UI):
         with open("results.txt", "a") as file:
             file.write(save_text)
             self.button_save_results.config(state="disabled")
+        self.score_screen()
 
 new_game = Main_App()
 new_game.initialize_menu()

@@ -1,6 +1,7 @@
 from tkinter import Tk, Button, Frame, BOTH, Label, Listbox, simpledialog
 from datetime import datetime
 from Character import Character
+from os import path
 
 class Game_UI:
     """
@@ -20,6 +21,17 @@ class Game_UI:
         self.dialog_enter_name = None # Used to easier get access from within methods
         self.game_over_label_1 = None # Used to easier get access from within methods
         self.game_over_label_2 = None # Used to easier get access from within methods
+        
+    def score_screen(self):
+        score_window = Tk()
+        score_window.title("Memories of previous victories")
+        scores = Listbox(score_window, background="black", bd=5, fg="white", state="normal")
+        scores.place(relwidth=1, relheight=1)
+        if path.isfile("results.txt"):
+            with open("results.txt", "r") as file:
+                entries = file.readlines()
+                for entry in entries:
+                    scores.insert(0, entry.strip())
         
     def clear_game_frame(self) -> None:
         """
@@ -55,6 +67,7 @@ class Game_UI:
         """
         Creates and sets the widgets without methods. Widgets methods are assigned in the Main class
         """
+        self.root.title("Fate of the fury")
         self.window_event = Listbox(self.game_frame, background="black", bd=5, fg="white", state="normal")
         self.window_player = Label(self.game_frame, background="white", bd=5, text="PLACEHOLDER: Player name", fg="black")
         self.window_enemy = Label(self.game_frame, background="red", bd=5, text="PLACEHOLDER: Enemy name")
@@ -103,5 +116,3 @@ class Game_UI:
         self.button_new_game.place(relheight=.1, relwidth=0.33, rely=.5, relx=.33)
         self.button_save_results.place(relheight=.1, relwidth=0.33, rely=.6, relx=.33)
         self.button_quit.place(relheight=.1, relwidth=0.33, rely=.7, relx=.33)
-        
-    
