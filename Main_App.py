@@ -10,21 +10,30 @@ class Main_App(Game, Game_UI):
         Game.__init__(self) # Multiple inheritance requires referencing each class instead of relying on super
         Game_UI.__init__(self)
     
-    def configure_button_methods(self):
+    def configure_button_methods(self) -> None:
+        """
+        Bind the button methods
+        """
         self.button_new_game.config(command = self.initialize_game, state="active")
         self.button_quit.config(command = exit, state="active")
         self.button_new_round.config(command = self.initialize_round, state="active")
         self.button_attack.config(command = lambda: self.player_attack(), state="disabled")
         self.button_save_results.config(command = lambda: self.save_results(self.results), state="active")
         
-    def initialize_menu(self):
+    def initialize_menu(self) -> None:
+        """
+        Initate the game with the start menu
+        """
         self.create_widgets()
         self.configure_button_methods()
         self.render_game_frame()
         self.place_widgets_menu()
         self.root.mainloop()
 
-    def initialize_game(self):
+    def initialize_game(self) -> None:
+        """
+        Start a new game. Update ui elements with game session information
+        """
         player_name = self.ask_player_name()
         self.game_active = True
         self.create_characters(player_name=player_name)
@@ -37,12 +46,18 @@ class Main_App(Game, Game_UI):
         self.update_event_window(f"Welcome! Press start new round to begin")
         self.root.mainloop()
 
-    def initialize_round(self):
+    def initialize_round(self) -> None:
+        """
+        Start a new round of the game. Increment round counter and update event window
+        """
         self.round_count += 1
         self.update_event_window(f"Round {self.round_count}")
         self.play_turn()
 
-    def play_turn(self):
+    def play_turn(self) -> None:
+        """
+        Use speed stat to determine who goes first and activate relevant ui elements to enable/disable player turn
+        """
         self.button_new_round.config(state="disabled") # disable button when round starts to prevent player from disrupting game flow
         if self.player.stats.get_speed() > self.enemy.stats.get_speed():
             self.update_event_window("You get the first move!")
@@ -57,6 +72,9 @@ class Main_App(Game, Game_UI):
             
             
     def player_attack(self) -> None:
+        """
+        Player attacks enemy with win game state check (in case enemy hp reaches 0)
+        """
         enemy = self.enemy
         player = self.player 
         attack_damage = player.attack(opponent_defense=enemy.stats.get_defense())
@@ -75,6 +93,9 @@ class Main_App(Game, Game_UI):
         self.button_new_round.config(state="active")
 
     def enemy_attack(self) -> None:
+        """
+        Enemy attackss player with fail game state check (in case player hp reaches 0)
+        """
         enemy = self.enemy
         player = self.player 
         attack_damage = enemy.attack(opponent_defense=player.stats.get_defense())
@@ -90,9 +111,10 @@ class Main_App(Game, Game_UI):
         self.update_char_window(player)
         self.player_active = True
         
-        # ------------------ Reset turn parameters ------------------ 
-
-    def game_over(self, results:str):
+    def game_over(self, results:str) -> None:
+        """
+        Activate game over menu
+        """
         self.results = results
         self.button_attack.config(state="disabled")        
         self.button_new_round.config(state="disabled")        
@@ -102,7 +124,10 @@ class Main_App(Game, Game_UI):
         self.configure_button_methods()
         self.game_active = False
     
-    def save_results(self, results:str):     
+    def save_results(self, results:str) -> None:    
+        """
+        Save game session results to text file
+        """
         now = datetime.now().strftime("%H:%M:%S")   
         save_text = f"{now} - {results}\n"
         with open("results.txt", "a") as file:

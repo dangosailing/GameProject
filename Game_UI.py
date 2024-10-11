@@ -22,7 +22,10 @@ class Game_UI:
         self.game_over_label_1 = None # Used to easier get access from within methods
         self.game_over_label_2 = None # Used to easier get access from within methods
         
-    def score_screen(self):
+    def score_screen(self) -> None:
+        """
+        Read results file and render a seperate score window
+        """
         score_window = Tk()
         score_window.title("Memories of previous victories")
         scores = Listbox(score_window, background="black", bd=5, fg="white", state="normal")
@@ -92,7 +95,7 @@ class Game_UI:
         self.button_new_round.place(relheight=.1, relwidth=.33, rely=.5, relx=.33)
         self.button_attack.place(relheight=.1, relwidth=.33, rely=.5, relx=.66)
         
-    def render_game_frame(self):
+    def render_game_frame(self) -> None:
         """
         Set root window to full screen and make the game frame expand to fill it
         """
@@ -117,8 +120,10 @@ class Game_UI:
         self.button_save_results.place(relheight=.1, relwidth=0.33, rely=.6, relx=.33)
         self.button_quit.place(relheight=.1, relwidth=0.33, rely=.7, relx=.33)
 
-
     def ask_player_name(self) -> str:
+        """
+        Render a dialog box with player name input. Returns player name as string
+        """
         player_name = simpledialog.askstring("Enter Player Name", "Enter your character´s name", parent=self.game_frame)
         return player_name
         
