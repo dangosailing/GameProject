@@ -27,6 +27,7 @@ class Game_UI:
         Read results file and render a seperate score window
         """
         score_window = Tk()
+        score_window.geometry("600x600")
         score_window.title("Memories of previous victories")
         scores = Listbox(score_window, background="black", bd=5, fg="white", state="normal")
         scores.place(relwidth=1, relheight=1)
