@@ -1,4 +1,4 @@
-from tkinter import Tk, Button, Frame, BOTH, Label, Listbox
+from tkinter import Tk, Button, Frame, BOTH, Label, Listbox, simpledialog
 from datetime import datetime
 from Character import Character
 from os import path
@@ -116,3 +116,9 @@ class Game_UI:
         self.button_new_game.place(relheight=.1, relwidth=0.33, rely=.5, relx=.33)
         self.button_save_results.place(relheight=.1, relwidth=0.33, rely=.6, relx=.33)
         self.button_quit.place(relheight=.1, relwidth=0.33, rely=.7, relx=.33)
+
+
+    def ask_player_name(self) -> str:
+        player_name = simpledialog.askstring("Enter Player Name", "Enter your character´s name", parent=self.game_frame)
+        return player_name
+        

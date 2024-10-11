@@ -1,6 +1,5 @@
 from Game import Game
 from Game_UI import Game_UI
-from tkinter import simpledialog
 from datetime import datetime
 
 class Main_App(Game, Game_UI):
@@ -26,7 +25,7 @@ class Main_App(Game, Game_UI):
         self.root.mainloop()
 
     def initialize_game(self):
-        player_name = simpledialog.askstring("Enter Player Name", "Enter your character´s name", parent=self.game_frame)
+        player_name = self.ask_player_name()
         self.game_active = True
         self.create_characters(player_name=player_name)
         self.clear_game_frame()
@@ -107,3 +106,4 @@ class Main_App(Game, Game_UI):
 
 new_game = Main_App()
 new_game.initialize_menu()
+
