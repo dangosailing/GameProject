@@ -33,7 +33,7 @@ class Main_App(Game, Game_UI):
         self.place_widgets_game()
         self.update_char_window(self.player)
         self.update_char_window(self.enemy)
-        self.initialize_round()
+        self.update_event_window(f"Welcome! Press start new round to begin")
         self.root.mainloop()
 
     def initialize_round(self):
@@ -60,9 +60,8 @@ class Main_App(Game, Game_UI):
             event_msg = f"You attacked but {enemy.get_name()} took no damage. The attack was too weak!"
         self.update_event_window(event_msg)
         if self.check_win_state():
-            event_msg = "Congratulations you have slain your enemy!"
-            self.game_over(event_msg)
-
+            results = f"{self.player.get_name()} bested {self.enemy.get_name()} in {self.round_count} rounds"
+            self.game_over(results)
 
         # ------------------ Enemy moves ------------------ #
         attack_damage = enemy.attack(opponent_defense=player.stats.get_defense())
@@ -86,12 +85,12 @@ class Main_App(Game, Game_UI):
         self.update_event_window("Round over!")
         self.initialize_round()
 
-    def game_over(self, event_msg:str):
+    def game_over(self, results:str):
         self.button_attack.config(state="disabled")        
         self.button_new_round.config(state="disabled")        
         self.clear_game_frame()
         self.create_widgets()
-        self.render_game_over(event_msg)
+        self.render_game_over(results)
         self.configure_button_methods()
         self.game_active = False
 
