@@ -11,6 +11,7 @@ class Game:
     self.game_active = False
     self.player_active = False
     self.round_count = 0
+    self.results = ""
 
   def create_characters(self, player_name:str):
       """

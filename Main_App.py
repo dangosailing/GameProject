@@ -1,6 +1,7 @@
 from Game import Game
 from Game_UI import Game_UI
 from tkinter import simpledialog
+from datetime import datetime
 
 class Main_App(Game, Game_UI):
     """
@@ -15,6 +16,7 @@ class Main_App(Game, Game_UI):
         self.button_quit.config(command = exit, state="active")
         self.button_new_round.config(command = self.initialize_round, state="active")
         self.button_attack.config(command = lambda: self.player_attack(), state="disabled")
+        self.button_save_results.config(command = lambda: self.save_results(self.results), state="active")
         
     def initialize_menu(self):
         self.create_widgets()
@@ -86,6 +88,7 @@ class Main_App(Game, Game_UI):
         self.initialize_round()
 
     def game_over(self, results:str):
+        self.results = results
         self.button_attack.config(state="disabled")        
         self.button_new_round.config(state="disabled")        
         self.clear_game_frame()
@@ -93,6 +96,13 @@ class Main_App(Game, Game_UI):
         self.render_game_over(results)
         self.configure_button_methods()
         self.game_active = False
+    
+    def save_results(self, results:str):     
+        now = datetime.now().strftime("%H:%M:%S")   
+        save_text = f"{now} - {results}\n"
+        with open("results.txt", "a") as file:
+            file.write(save_text)
+            self.button_save_results.config(state="disabled")
 
 new_game = Main_App()
 new_game.initialize_menu()
