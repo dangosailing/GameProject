@@ -74,8 +74,8 @@ class Main_App(Game, Game_UI):
             event_msg = f"{player.get_name()} took no damage. The attack was too weak!"
         self.update_event_window(event_msg)
         if self.check_fail_state():
-            event_msg = "Oh no! Your enemy has defeated you"
-            self.game_over(event_msg)
+            results = f"{self.enemy.get_name()} bested {self.player.get_name()} in {self.round_count} rounds"
+            self.game_over(results)
 
         # ------------------ Reset turn parameters ------------------ #
         self.player_active = False
