@@ -43,16 +43,22 @@ class Main_App(Game, Game_UI):
         self.play_turn()
 
     def play_turn(self):
-        self.player_active = True
-        self.button_attack.config(state="active")
         self.button_new_round.config(state="disabled") # disable button when round starts to prevent player from disrupting game flow
-        self.update_event_window(f"Player turn, use an action to advance the round")
+        if self.player.stats.get_speed() > self.enemy.stats.get_speed():
+            self.update_event_window("You get the first move!")
+            self.player_active = True
+            self.button_attack.config(state="active")
+        else:
+            self.update_event_window("Your enemy gets the first move! They chose to attack")
+            self.enemy_attack()
+            self.update_event_window(f"Player turn, use an action to advance the round")
+            self.player_active = True
+            self.button_attack.config(state="active")
+            
             
     def player_attack(self) -> None:
         enemy = self.enemy
         player = self.player 
-
-        # ------------------ Player moves ------------------ #
         attack_damage = player.attack(opponent_defense=enemy.stats.get_defense())
         if attack_damage > 0:
             enemy.stats.set_hp(enemy.stats.get_hp() - attack_damage)
@@ -63,8 +69,14 @@ class Main_App(Game, Game_UI):
         if self.check_win_state():
             results = f"{self.player.get_name()} bested {self.enemy.get_name()} in {self.round_count} rounds"
             self.game_over(results)
+        self.update_char_window(enemy)
+        self.player_active = False
+        self.button_attack.config(state="disabled")
+        self.button_new_round.config(state="active")
 
-        # ------------------ Enemy moves ------------------ #
+    def enemy_attack(self) -> None:
+        enemy = self.enemy
+        player = self.player 
         attack_damage = enemy.attack(opponent_defense=player.stats.get_defense())
         if attack_damage > 0:
             player.stats.set_hp(player.stats.get_hp() - attack_damage)
@@ -75,16 +87,10 @@ class Main_App(Game, Game_UI):
         if self.check_fail_state():
             results = f"{self.enemy.get_name()} bested {self.player.get_name()} in {self.round_count} rounds"
             self.game_over(results)
-
-        # ------------------ Reset turn parameters ------------------ #
-        self.player_active = False
-        self.button_attack.config(state="disabled")
-        self.button_new_round.config(state="active") # disable button when round starts to prevent player from disrupting game flow
-
-        self.update_char_window(enemy)
         self.update_char_window(player)
-        self.update_event_window("Round over!")
-        self.initialize_round()
+        self.player_active = True
+        
+        # ------------------ Reset turn parameters ------------------ 
 
     def game_over(self, results:str):
         self.results = results
