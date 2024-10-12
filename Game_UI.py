@@ -17,10 +17,12 @@ class Game_UI:
         self.button_save_results = None # Used to easier get access from within methods
         self.button_new_game = None # Used to easier get access from within methods
         self.button_attack = None # Used to easier get access from within methods
+        self.button_strong_attack = None # Used to easier get access from within methods
         self.button_new_round = None # Used to easier get access from within methods
         self.dialog_enter_name = None # Used to easier get access from within methods
         self.game_over_label_1 = None # Used to easier get access from within methods
         self.game_over_label_2 = None # Used to easier get access from within methods
+        self.button_use_skill = None # Used to easier get access from within methods
         
     def score_screen(self) -> None:
         """
@@ -79,6 +81,7 @@ class Game_UI:
         self.button_save_results = Button(self.game_frame, text="Save results")
         self.button_new_round = Button(self.game_frame, text="NEW ROUND")
         self.button_attack = Button(self.game_frame, text="ATTACK")
+        self.button_strong_attack = Button(self.game_frame, text="STRONG ATTACK")
         self.button_new_game = Button(self.game_frame, text="New Game")
         self.button_quit = Button(self.game_frame, text="Quit", command=exit)
         self.game_over_label_1 = Label(self.game_frame, text="Game Over", bg="black", fg="white", font=("Arial", 25))
@@ -95,6 +98,7 @@ class Game_UI:
         self.button_quit.place(relheight=.1, relwidth=.33, rely=.5)
         self.button_new_round.place(relheight=.1, relwidth=.33, rely=.5, relx=.33)
         self.button_attack.place(relheight=.1, relwidth=.33, rely=.5, relx=.66)
+        self.button_strong_attack.place(relheight=.1, relwidth=.33, rely=.6, relx=.66)
         
     def render_game_frame(self) -> None:
         """
