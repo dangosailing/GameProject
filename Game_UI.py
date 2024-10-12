@@ -88,7 +88,7 @@ class Game_UI:
         self.button_quit = Button(self.game_frame, text="Quit", command=exit)
         self.game_over_label_1 = Label(self.game_frame, text="Game Over", bg="black", fg="white", font=("Arial", 25))
         self.game_over_label_2 = Label(self.game_frame, text="", bg="black", fg="white")
-        self.hp_bar_player = ttk.Progressbar(self.game_frame)
+        self.hp_bar_player = ttk.Progressbar(self.game_frame) # Using a progressbar as a hp bar with each negative step equaling the attack damage
         self.hp_bar_enemy = ttk.Progressbar(self.game_frame)
         
     def place_widgets_game(self) -> None:
