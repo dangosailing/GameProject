@@ -44,6 +44,10 @@ class Main_App(Game, Game_UI):
         self.place_widgets_game()
         self.update_char_window(self.player)
         self.update_char_window(self.enemy)
+        self.hp_bar_player.config(maximum=self.player.stats.get_hp()+1) 
+        self.hp_bar_enemy.config(maximum=self.enemy.stats.get_hp()+1)
+        self.hp_bar_player.step(self.player.stats.get_hp()) 
+        self.hp_bar_enemy.step(self.enemy.stats.get_hp())
         self.update_event_window(f"Welcome! Press start new round to begin")
         self.root.mainloop()
 
@@ -92,6 +96,7 @@ class Main_App(Game, Game_UI):
             attack_damage = player.strong_attack()
         if attack_damage > 0:
             enemy.stats.set_hp(enemy.stats.get_hp() - attack_damage)
+            self.hp_bar_enemy.step(-attack_damage)
             event_msg = f"You attacked! {enemy.get_name()} took damage. {enemy.stats.get_hp()} HP remaining"
         else:
             event_msg = f"You attacked but {enemy.get_name()} took no damage. The attack was too weak!"
@@ -115,6 +120,7 @@ class Main_App(Game, Game_UI):
         attack_damage = enemy.attack(opponent_defense=player.stats.get_defense())
         if attack_damage > 0:
             player.stats.set_hp(player.stats.get_hp() - attack_damage)
+            self.hp_bar_player.step(-attack_damage)
             event_msg = f"{player.get_name()} took damage. {player.stats.get_hp()} HP remaining"
         else:
             event_msg = f"{player.get_name()} took no damage. The attack was too weak!"

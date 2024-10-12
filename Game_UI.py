@@ -1,4 +1,4 @@
-from tkinter import Tk, Button, Frame, BOTH, Label, Listbox, simpledialog
+from tkinter import Tk, Button, Frame, BOTH, Label, Listbox, simpledialog, ttk
 from datetime import datetime
 from Character import Character
 from os import path
@@ -23,6 +23,8 @@ class Game_UI:
         self.game_over_label_1 = None # Used to easier get access from within methods
         self.game_over_label_2 = None # Used to easier get access from within methods
         self.button_use_skill = None # Used to easier get access from within methods
+        self.hp_bar_player = None # Used to easier get access from within methods
+        self.hp_bar_enemy = None # Used to easier get access from within methods
         
     def score_screen(self) -> None:
         """
@@ -86,6 +88,8 @@ class Game_UI:
         self.button_quit = Button(self.game_frame, text="Quit", command=exit)
         self.game_over_label_1 = Label(self.game_frame, text="Game Over", bg="black", fg="white", font=("Arial", 25))
         self.game_over_label_2 = Label(self.game_frame, text="", bg="black", fg="white")
+        self.hp_bar_player = ttk.Progressbar(self.game_frame)
+        self.hp_bar_enemy = ttk.Progressbar(self.game_frame)
         
     def place_widgets_game(self) -> None:
         """
@@ -94,6 +98,9 @@ class Game_UI:
         self.window_event.place(relheight=0.5, relwidth=0.33, relx=.0)
         self.window_player.place(relheight=0.5, relwidth=0.33, relx=.33)
         self.window_enemy.place(relheight=0.5, relwidth=0.33, relx=.66)    
+
+        self.hp_bar_player.place(relheight=0.04, relwidth=0.33, relx=.33) 
+        self.hp_bar_enemy.place(relheight=0.04, relwidth=0.33, relx=.66)
         
         self.button_quit.place(relheight=.1, relwidth=.33, rely=.5)
         self.button_new_round.place(relheight=.1, relwidth=.33, rely=.5, relx=.33)
@@ -131,4 +138,3 @@ class Game_UI:
         """
         player_name = simpledialog.askstring("Enter Player Name", "Enter your character´s name", parent=self.game_frame)
         return player_name
-        
