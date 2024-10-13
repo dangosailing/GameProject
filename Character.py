@@ -39,3 +39,12 @@ class Character:
     modified_attack_damage = self.stats.get_attack() * attack_modifier
     self.stun_duration = 3 # If player applies a strong attack they become inactive for 2 turns due to exhaustion
     return modified_attack_damage
+      
+  def did_attack_hit(self, enemy_agility:int) -> bool:
+      """
+      Use enemy agility as modifier to determine if attack is a hit or miss
+      """
+      agility_modifier = 100 - enemy_agility
+      return randint(0,100) < agility_modifier
+
+    
