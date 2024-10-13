@@ -9,6 +9,7 @@ class Character:
     self.stats = stats
     self.is_player = is_player
     self.stun_duration = 0
+    self.unallocated_stat_pts = 50
   
   def get_name(self) -> str:
     """
@@ -46,5 +47,3 @@ class Character:
       """
       agility_modifier = 100 - enemy_agility
       return randint(0,100) < agility_modifier
-
-    

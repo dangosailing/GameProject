@@ -16,6 +16,7 @@ class Game_UI:
         self.button_quit = None # Used to easier get access from within methods
         self.button_save_results = None # Used to easier get access from within methods
         self.button_new_game = None # Used to easier get access from within methods
+        self.button_create_character = None # Used to easier get access from within methods
         self.button_attack = None # Used to easier get access from within methods
         self.button_strong_attack = None # Used to easier get access from within methods
         self.button_new_round = None # Used to easier get access from within methods
@@ -25,6 +26,19 @@ class Game_UI:
         self.button_use_skill = None # Used to easier get access from within methods
         self.hp_bar_player = None # Used to easier get access from within methods
         self.hp_bar_enemy = None # Used to easier get access from within methods
+        self.set_hp_label = None # Used to easier get access from within methods
+        self.set_attack_label = None # Used to easier get access from within methods
+        self.set_defense_label = None # Used to easier get access from within methods
+        self.set_agility_label = None # Used to easier get access from within methods
+        self.plus_hp = None # Used to easier get access from within methods
+        self.minus_hp = None # Used to easier get access from within methods
+        self.plus_attack = None # Used to easier get access from within methods
+        self.minus_attack = None # Used to easier get access from within methods
+        self.plus_defense = None # Used to easier get access from within methods
+        self.minus_defense = None # Used to easier get access from within methods
+        self.plus_agility = None # Used to easier get access from within methods
+        self.minus_agility = None # Used to easier get access from within methods
+        self.remaining_pts_label = None
         
     def score_screen(self) -> None:
         """
@@ -85,11 +99,26 @@ class Game_UI:
         self.button_attack = Button(self.game_frame, text="ATTACK")
         self.button_strong_attack = Button(self.game_frame, text="STRONG ATTACK")
         self.button_new_game = Button(self.game_frame, text="New Game")
+        self.button_create_character = Button(self.game_frame, text="Create character")
         self.button_quit = Button(self.game_frame, text="Quit", command=exit)
         self.game_over_label_1 = Label(self.game_frame, text="Game Over", bg="black", fg="white", font=("Arial", 25))
         self.game_over_label_2 = Label(self.game_frame, text="", bg="black", fg="white")
         self.hp_bar_player = ttk.Progressbar(self.game_frame)
         self.hp_bar_enemy = ttk.Progressbar(self.game_frame)
+        self.remaining_pts_label = Label(self.game_frame, background="white", bd=5, fg="black")
+        self.set_hp_label = Label(self.game_frame, background="white", bd=5, fg="black")
+        self.set_attack_label = Label(self.game_frame, background="white", bd=5, fg="black")
+        self.set_defense_label = Label(self.game_frame, background="white", bd=5, fg="black")
+        self.set_agility_label = Label(self.game_frame, background="white", bd=5, fg="black")
+        self.plus_hp = Button(self.game_frame, text="+")
+        self.minus_hp = Button(self.game_frame, text="-")
+        self.plus_attack = Button(self.game_frame, text="+")
+        self.minus_attack = Button(self.game_frame, text="-")
+        self.plus_defense = Button(self.game_frame, text="+")
+        self.minus_defense = Button(self.game_frame, text="-")
+        self.plus_agility = Button(self.game_frame, text="+")
+        self.minus_agility =Button(self.game_frame, text="-")
+       
         
     def place_widgets_game(self) -> None:
         """
@@ -118,9 +147,9 @@ class Game_UI:
         """
         Places widgets in the menu frame
         """
-        self.button_new_game.place(relheight=0.1, relwidth=0.33, rely=.5, relx=0)
+        self.button_create_character.place(relheight=0.1, relwidth=0.33, rely=.5, relx=0)
         self.button_quit.place(relheight=0.1, relwidth=0.33, rely=.6, relx=0)
-
+    
     def render_game_over(self, results:str) -> None:
         """
         Render game over screen
@@ -138,3 +167,35 @@ class Game_UI:
         """
         player_name = simpledialog.askstring("Enter Player Name", "Enter your character´s name", parent=self.game_frame)
         return player_name
+    
+    def place_widgets_create_character(self, player:Character) -> None:
+        """
+        Render a character creator screen
+        """
+        standard_hp = player.stats.get_hp()
+        standard_attack = player.stats.get_attack()
+        standard_defense = player.stats.get_defense()
+        standard_agility = player.stats.get_agility()
+        remaining_stat_pts = player.unallocated_stat_pts
+        
+        self.remaining_pts_label.config(text=f"Remaining pts: {remaining_stat_pts}")
+        self.set_hp_label.config(text=f"HP: {standard_hp}")
+        self.set_attack_label.config(text=f"Attack: {standard_attack}")
+        self.set_defense_label.config(text=f"Defense: {standard_defense}")
+        self.set_agility_label.config(text=f"Agility: {standard_agility}")
+        
+        self.remaining_pts_label.place(relheight=.1, relwidth=0.33, rely=.2, relx=.5)
+        self.plus_hp.place(relheight=.1, relwidth=0.05, rely=.3, relx=.5)
+        self.minus_hp.place(relheight=.1, relwidth=0.05, rely=.3, relx=.56)
+        self.plus_attack.place(relheight=.1, relwidth=0.05, rely=.4, relx=.5)
+        self.minus_attack.place(relheight=.1, relwidth=0.05, rely=.4, relx=.56)
+        self.plus_defense.place(relheight=.1, relwidth=0.05, rely=.5, relx=.5)
+        self.minus_defense.place(relheight=.1, relwidth=0.05, rely=.5, relx=.56)
+        self.plus_agility.place(relheight=.1, relwidth=0.05, rely=.6, relx=.5)
+        self.minus_agility.place(relheight=.1, relwidth=0.05, rely=.6, relx=.56)
+        self.set_hp_label.place(relheight=.1, relwidth=0.33, rely=.3, relx=.1)
+        self.set_attack_label.place(relheight=.1, relwidth=0.33, rely=.4, relx=.1)
+        self.set_defense_label.place(relheight=.1, relwidth=0.33, rely=.5, relx=.1)
+        self.set_agility_label.place(relheight=.1, relwidth=0.33, rely=.6, relx=.1)
+        
+        self.button_quit.place(relheight=.1, relwidth=0.33, rely=.7, relx=.1)
