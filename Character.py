@@ -8,9 +8,8 @@ class Character:
     self.__name = name
     self.stats = stats
     self.is_player = is_player
-    self.stun_duration = 0
     self.unallocated_stat_pts = 50
-  
+
   def get_name(self) -> str:
     """
     name getter method

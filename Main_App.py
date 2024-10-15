@@ -30,33 +30,41 @@ class Main_App(Game, Game_UI):
         self.plus_agility.config(command= lambda: self.add_to_stats(stat_type="agility"))
         self.minus_agility.config(command= lambda: self.subtract_from_stats(stat_type="agility"))
   
-    def add_to_stats(self, stat_type:str) -> None:
+    def add_to_stats(self, stat_type:str) -> None:        
         if stat_type == "hp":
             new_hp = self.player.stats.get_hp() + 10
             self.player.stats.set_hp(new_hp)
             self.player.unallocated_stat_pts -= 10     
-            self.set_hp_label.config(text=f"HP: {self.player.stats.get_hp()}")   
-            self.remaining_pts_label.config(text=f"Remaining pts: {self.player.unallocated_stat_pts}")   
+            self.set_hp_label.config(text=f"HP: {self.player.stats.get_hp()}")    
+            self.minus_hp.config(state="active")  
         if stat_type == "attack":
             new_attack = self.player.stats.get_attack() + 10
             self.player.stats.set_attack(new_attack)
             self.player.unallocated_stat_pts -= 10     
             self.set_attack_label.config(text=f"Attack: {self.player.stats.get_attack()}")   
-            self.remaining_pts_label.config(text=f"Remaining pts: {self.player.unallocated_stat_pts}")
+            
+            self.minus_attack.config(state="active")  
         if stat_type == "defense":
             new_defense = self.player.stats.get_defense() + 10
             self.player.stats.set_defense(new_defense)
             self.player.unallocated_stat_pts -= 10     
             self.set_defense_label.config(text=f"Defense: {self.player.stats.get_defense()}")
-            self.remaining_pts_label.config(text=f"Remaining pts: {self.player.unallocated_stat_pts}")
+            
+            self.minus_defense.config(state="active")  
         if stat_type == "agility":
             new_agility = self.player.stats.get_agility() + 10
             self.player.stats.set_agility(new_agility)
             self.player.unallocated_stat_pts -= 10     
             self.set_agility_label.config(text=f"Agility: {self.player.stats.get_agility()}")
-            self.remaining_pts_label.config(text=f"Remaining pts: {self.player.unallocated_stat_pts}") 
             
-    
+            self.minus_agility.config(state="active")  
+        if self.player.unallocated_stat_pts == 0:
+            self.plus_hp.config(state="disabled")
+            self.plus_attack.config(state="disabled")
+            self.plus_defense.config(state="disabled")
+            self.plus_agility.config(state="disabled")
+        self.remaining_pts_label.config(text=f"Remaining pts: {self.player.unallocated_stat_pts}")
+            
     def subtract_from_stats(self, stat_type:str) -> None:
         if stat_type == "hp":
             new_hp = self.player.stats.get_hp() - 10
@@ -64,24 +72,48 @@ class Main_App(Game, Game_UI):
             self.player.unallocated_stat_pts += 10     
             self.set_hp_label.config(text=f"HP: {self.player.stats.get_hp()}")  
             self.remaining_pts_label.config(text=f"Remaining pts: {self.player.unallocated_stat_pts}")
+            
         if stat_type == "attack":
             new_attack = self.player.stats.get_attack() - 10
             self.player.stats.set_attack(new_attack)
             self.player.unallocated_stat_pts += 10     
             self.set_attack_label.config(text=f"Attack: {self.player.stats.get_attack()}")   
             self.remaining_pts_label.config(text=f"Remaining pts: {self.player.unallocated_stat_pts}")
+            
         if stat_type == "defense":
             new_defense = self.player.stats.get_defense() - 10
             self.player.stats.set_defense(new_defense)
             self.player.unallocated_stat_pts += 10     
             self.set_defense_label.config(text=f"Defense: {self.player.stats.get_defense()}")
             self.remaining_pts_label.config(text=f"Remaining pts: {self.player.unallocated_stat_pts}")
+            
         if stat_type == "agility":
             new_agility = self.player.stats.get_agility() - 10
             self.player.stats.set_agility(new_agility)
             self.player.unallocated_stat_pts += 10     
             self.set_agility_label.config(text=f"Agility: {self.player.stats.get_agility()}")
             self.remaining_pts_label.config(text=f"Remaining pts: {self.player.unallocated_stat_pts}")
+            
+        if self.player.unallocated_stat_pts > 0 and self.player.stats.get_hp() > 10:
+            self.minus_hp.config(state="active")
+        else:
+            self.minus_hp.config(state="disabled")
+            
+        if self.player.unallocated_stat_pts > 0 and self.player.stats.get_attack() > 10:
+            self.minus_attack.config(state="active")
+        else:
+            self.minus_attack.config(state="disabled")
+            
+        if self.player.unallocated_stat_pts > 0 and self.player.stats.get_defense() > 0:
+            self.minus_defense.config(state="active")
+        else:
+            self.minus_defense.config(state="disabled")
+        
+        if self.player.unallocated_stat_pts > 0 and self.player.stats.get_agility() > 0:
+            self.minus_agility.config(state="active")
+        else:
+            self.minus_agility.config(state="disabled")
+        
         
     def initialize_menu(self) -> None:
         """

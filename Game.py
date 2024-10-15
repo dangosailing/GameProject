@@ -20,11 +20,12 @@ class Game:
       Ask player to create their character and select an enemy
       """
       enemy_name ="Goblin King" # Placeholder name 
+      player = self.player
 
-      warrior_stats = Character_Stats(hp=50, attack=10, defense=5, agility=5) # Placeholder stats
+      warrior_stats = Character_Stats(hp=50, attack=20, defense=10, agility=10)
       warrior = Character(name=player_name, stats=warrior_stats, is_player=True)
 
-      enemy_stats = Character_Stats(hp=150, attack=25, defense=2, agility=20) # Placeholder stats
+      enemy_stats = Character_Stats(hp=150, attack=25, defense=2, agility=20)
       enemy = Character(name=enemy_name, stats=enemy_stats, is_player=False)
       
       self.player = warrior

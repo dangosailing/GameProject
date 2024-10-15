@@ -111,14 +111,13 @@ class Game_UI:
         self.set_defense_label = Label(self.game_frame, background="white", bd=5, fg="black")
         self.set_agility_label = Label(self.game_frame, background="white", bd=5, fg="black")
         self.plus_hp = Button(self.game_frame, text="+")
-        self.minus_hp = Button(self.game_frame, text="-")
+        self.minus_hp = Button(self.game_frame, text="-", state="disabled")
         self.plus_attack = Button(self.game_frame, text="+")
-        self.minus_attack = Button(self.game_frame, text="-")
+        self.minus_attack = Button(self.game_frame, text="-", state="disabled")
         self.plus_defense = Button(self.game_frame, text="+")
-        self.minus_defense = Button(self.game_frame, text="-")
+        self.minus_defense = Button(self.game_frame, text="-", state="disabled")
         self.plus_agility = Button(self.game_frame, text="+")
-        self.minus_agility =Button(self.game_frame, text="-")
-       
+        self.minus_agility =Button(self.game_frame, text="-", state="disabled")
         
     def place_widgets_game(self) -> None:
         """
@@ -198,4 +197,5 @@ class Game_UI:
         self.set_defense_label.place(relheight=.1, relwidth=0.33, rely=.5, relx=.1)
         self.set_agility_label.place(relheight=.1, relwidth=0.33, rely=.6, relx=.1)
         
-        self.button_quit.place(relheight=.1, relwidth=0.33, rely=.7, relx=.1)
+        self.button_new_game.place(relheight=.1, relwidth=0.33, rely=.7, relx=.1)
+        self.button_quit.place(relheight=.1, relwidth=0.33, rely=.8, relx=.1)
