@@ -2,11 +2,11 @@ class Character_Stats:
   """
   Class to define character stats
   """
-  def __init__(self, hp:int, attack:int, defense:int, speed:int) -> None:
+  def __init__(self, hp:int, attack:int, defense:int, agility:int) -> None:
     self.__hp = hp # Character HP pool: trigger win or fail state for battle
     self.__attack = attack # Character attack value: damage to hp = attack of character - def of opponent 
     self.__defense = defense # Character defense value: damage to hp = attack of character - def of opponent 
-    self.__speed = speed # Character speed value: determines who goes first in a round
+    self.__agility = agility # Character agility value: determines who goes first in a round
 
   def get_hp(self) -> int:
     """
@@ -44,15 +44,15 @@ class Character_Stats:
     """
     self.__defense = defense
 
-  def get_speed(self) -> int:
+  def get_agility(self) -> int:
     """
-    speed getter method
+    agility getter method
     """
-    return self.__speed
+    return self.__agility
   
-  def set_speed(self, speed:int) -> None:
+  def set_agility(self, agility:int) -> None:
     """
-    speed setter method
+    agility setter method
     """
-    self.__speed = speed
+    self.__agility = agility
     

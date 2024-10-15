@@ -35,6 +35,7 @@ class Main_App(Game, Game_UI):
         """
         Start a new game. Update ui elements with game session information
         """
+        self.round_count = 0
         player_name = self.ask_player_name()
         self.game_active = True
         self.create_characters(player_name=player_name)
@@ -56,81 +57,63 @@ class Main_App(Game, Game_UI):
         Start a new round of the game. Increment round counter and update event window
         """
         self.round_count += 1
-        self.player_moved = False
-        self.player_moved = False
         self.update_event_window(f"Round {self.round_count}")
-        self.play_turn()
-
-
-# TODO : FIGURE OUT WHY ENEMY IS ATTACKING AT FIRST ROUND AND THEN NEVER AGAIN
-    def play_turn(self) -> None:
-        """
-        Use speed stat to determine who goes first and activate relevant ui elements to enable/disable player turn
-        """
         self.button_new_round.config(state="disabled") # disable button when round starts to prevent player from disrupting game flow
-        #if self.player_moved == False and self.enemy_moved == False:
-        if self.player.stats.get_speed() > self.enemy.stats.get_speed():
-            self.update_event_window("You get the first move!")
-            self.player_active = True
-            self.button_attack.config(state="active")
-            self.button_strong_attack.config(state="active")
-        else:
-            self.update_event_window("Your enemy gets the first move! They chose to attack")
-            self.enemy_attack()
-            self.update_event_window(f"Playxer turn, use an action to advance the round")
-            self.player_active = True
-            self.button_attack.config(state="active")
-            self.button_strong_attack.config(state="active")
-        if self.enemy_moved == False:
-            self.enemy_attack()
-            
+        self.button_attack.config(state="active")
+        self.button_strong_attack.config(state="active")
+    
     def player_attack(self, attack_type:str) -> None:
         """
         Player attacks enemy with win game state check (in case enemy hp reaches 0)
         """
         enemy = self.enemy
         player = self.player 
-        if attack_type == "normal":
-            attack_damage = player.attack(opponent_defense=enemy.stats.get_defense())
-        elif attack_type == "strong":
-            attack_damage = player.strong_attack()
-        if attack_damage > 0:
-            enemy.stats.set_hp(enemy.stats.get_hp() - attack_damage)
-            self.hp_bar_enemy.step(-attack_damage) # The progressbar is set to equal the max hp so we just need to subtract the attack damage as step size
-            event_msg = f"You attacked! {enemy.get_name()} took damage. {enemy.stats.get_hp()} HP remaining"
+        if player.did_attack_hit(enemy.stats.get_agility()) :
+            if attack_type == "normal":
+                attack_damage = player.attack(opponent_defense=enemy.stats.get_defense())
+            elif attack_type == "strong":
+                attack_damage = player.strong_attack()
+            if attack_damage > 0:
+                enemy.stats.set_hp(enemy.stats.get_hp() - attack_damage)
+                self.hp_bar_enemy.step(-attack_damage)
+                event_msg = f"You attacked! {enemy.get_name()} took damage. {enemy.stats.get_hp()} HP remaining"
+            else:
+                event_msg = f"You attacked but {enemy.get_name()} took no damage. The attack was too weak!"
+            self.update_event_window(event_msg)
+            if self.check_win_state():
+                results = f"{self.player.get_name()} bested {self.enemy.get_name()} in {self.round_count} rounds"
+                self.game_over(results)
+            self.update_char_window(enemy)
         else:
-            event_msg = f"You attacked but {enemy.get_name()} took no damage. The attack was too weak!"
-        self.update_event_window(event_msg)
-        if self.check_win_state():
-            results = f"{self.player.get_name()} bested {self.enemy.get_name()} in {self.round_count} rounds"
-            self.game_over(results)
-        self.update_char_window(enemy)
-        self.player_active = False
+            event_msg = "Your attack missed. The enemy was too nimble!"
+            self.update_event_window(event_msg)
         self.button_attack.config(state="disabled")
         self.button_strong_attack.config(state="disabled")
-        self.button_new_round.config(state="active")
-        self.player_moved = True
+        self.enemy_attack()
 
     def enemy_attack(self) -> None:
         """
-        Enemy attackss player with fail game state check (in case player hp reaches 0)
+        Enemy attacks player with fail game state check (in case player hp reaches 0)
         """
         enemy = self.enemy
         player = self.player 
-        attack_damage = enemy.attack(opponent_defense=player.stats.get_defense())
-        if attack_damage > 0:
-            player.stats.set_hp(player.stats.get_hp() - attack_damage)
-            self.hp_bar_player.step(-attack_damage) # The progressbar is set to equal the max hp so we just need to subtract the attack damage as step size
-            event_msg = f"{player.get_name()} took damage. {player.stats.get_hp()} HP remaining"
+        if enemy.did_attack_hit(player.stats.get_agility()) :
+            attack_damage = enemy.attack(opponent_defense=player.stats.get_defense())
+            if attack_damage > 0:
+                player.stats.set_hp(player.stats.get_hp() - attack_damage)
+                self.hp_bar_player.step(-attack_damage)
+                event_msg = f"{player.get_name()} took damage. {player.stats.get_hp()} HP remaining"
+            else:
+                event_msg = f"{player.get_name()} took no damage. The attack was too weak!"
+            self.update_event_window(event_msg)
+            if self.check_fail_state():
+                results = f"{self.enemy.get_name()} bested {self.player.get_name()} in {self.round_count} rounds"
+                self.game_over(results)
+            self.update_char_window(player)
         else:
-            event_msg = f"{player.get_name()} took no damage. The attack was too weak!"
-        self.update_event_window(event_msg)
-        if self.check_fail_state():
-            results = f"{self.enemy.get_name()} bested {self.player.get_name()} in {self.round_count} rounds"
-            self.game_over(results)
-        self.update_char_window(player)
-        self.player_active = True
-        self.enemy_moved = True
+            event_msg = f"{enemy.get_name()}´s attack missed. You got lucky!"
+            self.update_event_window(event_msg)
+        self.button_new_round.config(state="active")
         
     def game_over(self, results:str) -> None:
         """

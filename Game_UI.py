@@ -63,9 +63,9 @@ class Game_UI:
         name = character.get_name()
         health = stats.get_hp()
         attack = stats.get_attack()
-        speed = stats.get_speed()
+        agility = stats.get_agility()
         defense = stats.get_defense()
-        status_text = f"{name}\nHealth:{health}\nAttack: {attack}\nDefense: {defense}\nSpeed: {speed}"
+        status_text = f"{name}\nHealth:{health}\nAttack: {attack}\nDefense: {defense}\nAgility: {agility}"
         if character.is_player:
             self.window_player.config(text=status_text)
         else:
